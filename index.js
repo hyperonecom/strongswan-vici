@@ -32,7 +32,7 @@ VICI.prototype.connect = function() {
         try {
             const dec = new decode();
             const obj = dec.parse(data);
-            self.emit('data', obj);
+            self.emit('packet', obj);
             self.buffer = Buffer.alloc(0);
         }
         catch(e) {
@@ -53,7 +53,7 @@ VICI.prototype.end = function(data) {
 VICI.prototype._cmd = function(cmd, body) {
     const self = this;
     return new Promise(function(resolve, reject) {
-        self.on('data', data => resolve(data));
+        self.on('packet', data => resolve(data));
         self.on('error', err => reject(err));
         self.on('timeout', () => reject());
 
