@@ -13,8 +13,7 @@ const VICI = function(opts = {}) {
     this.buffer = Buffer.alloc(0);
 };
 
-VICI.prototype = Object.create(events.EventEmitter.prototype);
-VICI.prototype.constructor = VICI;
+VICI.prototype.__proto__ = events.EventEmitter.prototype;
 
 VICI.prototype.connect = function() {
     this.client = net.createConnection(this.socket);
