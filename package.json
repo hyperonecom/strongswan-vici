@@ -1,0 +1,21 @@
+{
+  "name": "strongswan-vici",
+  "version": "0.1.0",
+  "description": "Javacsript implementation of VICI protocol for strongSwan",
+  "keywords": ["strongswan", "vici", "ike", "ipsec"],
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Gregry Brzeski",
+    "email": "gregory@brzeski.pl"
+  },
+  "license": "Apache-2.0",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ]
+}
