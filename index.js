@@ -56,7 +56,7 @@ VICI.prototype._cmd = function(cmd, body) {
     return new Promise(function(resolve, reject) {
         self.on('data', data => resolve(data));
         self.on('error', err => reject(err));
-        self.on('timeout', () => reject(timeout));
+        self.on('timeout', () => reject());
 
         const enc = new encode();
         self.write(enc.cmd_request(cmd));
