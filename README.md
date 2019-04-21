@@ -56,6 +56,17 @@ A low-level VICI protocol description is available in:
 * github, vici plugin [sources folder](https://github.com/strongswan/strongswan/tree/57447015db828832e0e141dcdab7fbf61f828851/src/libcharon/plugins/vici)
 * strongswan.org, [VICI protocol](https://www.strongswan.org/apidoc/md_src_libcharon_plugins_vici_README.html) section
 
+## Unix Socket sniffing
+
+Sometimes during development it is necessary to inspect communication in both direction on unix socket. It greatly helps to understand what is happening.
+
+Sniffing on unix socket is rather simple operation and should be performed on running strongSwan.
+
+```
+# mv /var/run/charon.vici{,.orig}
+# socat -t100 -x -v UNIX-LISTEN:/var/run/charon.vici,mode=777,reuseaddr,fork UNIX-CONNECT:/var/run/charon.vici.orig
+```
+
 ## Contributing
 
 All new contributions to the project are welcome, be it a new functionality or bugfix. It is awsome that you would like to contribute! Open an issue so we can discuss your plans.
