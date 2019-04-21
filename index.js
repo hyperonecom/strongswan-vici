@@ -19,13 +19,7 @@ VICI.prototype.connect = function() {
     this.client = net.createConnection(this.socket);
 
     const self = this;
-    this.client.on('connect', function() { self.emit('connect'); });
-    this.client.on('drain', function() { self.emit('drain'); });
-    this.client.on('end', function() { self.emit('end'); });
-    this.client.on('close', function(hadError) { self.emit('close', hadError); });
-    this.client.on('ready', function() { self.emit('ready'); });
-    this.client.on('timeout', function() { self.emit('timeout'); });
-    this.client.on('error', function(err) { self.emit('error', err); });
+    self._events = this.client._events;
 
     this.client.on('data', function(data) {
         self.buffer = Buffer.concat([ self.buffer, data ]);
@@ -53,10 +47,27 @@ VICI.prototype.end = function(data) {
 VICI.prototype._cmd = function(cmd, body) {
     const self = this;
     return new Promise(function(resolve, reject) {
-        self.on('packet', data => resolve(data));
-        self.on('error', err => reject(err));
-        self.on('timeout', () => reject());
+        const removeListeners = () => Object.keys(listeners).forEach(e => { 
+            // console.log(`remove listener for: ${e}`);
+            self.removeListener(e, listeners[e]);
+        });
 
+        const listeners = {
+            timeout: () => {
+                reject();
+                removeListeners();
+            },
+            error: (err) => {
+                reject(err);
+                removeListeners();
+            },
+            packet: (data) =>{
+                resolve(data);
+                removeListeners();
+            }
+        };
+
+        Object.keys(listeners).forEach(e => self.on(e, listeners[e]));
         const enc = new encode();
         self.write(enc.cmd_request(cmd));
     });
